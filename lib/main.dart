@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mynote/provider/renkNotifier.dart';
+import 'package:mynote/screens/add_task.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(),
+      routes: {
+        "/add_task": (context) => AddTask(),
+      },
     );
   }
 }
@@ -35,39 +39,53 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
         title: Text("myNote"),
         centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      body: Container(
+        color: Colors.black54,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Henüz gösterilecek hiçbir görevin bulunmamaktadır.',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "Hemen yeni bir görev oluştur",
+                style: Theme.of(context).textTheme.headline5,
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        backgroundColor: Colors.red,
+        onPressed: () {
+          Navigator.pushNamed(context, "/add_task");
+        },
         child: Icon(Icons.add),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notes_rounded), label: "Görevlerim"),
+          BottomNavigationBarItem(icon: Icon(Icons.add_call), label: "Bugün"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add_call), label: "Yakındakiler"),
+          BottomNavigationBarItem(icon: Icon(Icons.add_call), label: "Tümü"),
+        ],
       ),
     );
   }
