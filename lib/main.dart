@@ -47,14 +47,15 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text("myNote"),
+        title: Container(height: 50,width: 140,
+          child: Image.asset("assets/images/myNoteanaekran.png",fit: BoxFit.fill,)),
         centerTitle: true,
       ),
       body: Container(
-        color: Colors.black54,
+        color: Colors.black87,
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
@@ -83,11 +84,11 @@ class _MyHomePageState extends State<MyHomePage> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.notes_rounded), label: "Görevlerim"),
-          BottomNavigationBarItem(icon: Icon(Icons.add_call), label: "Bugün"),
+              icon: Icon(Icons.notes_outlined), label: "Görevlerim"),
+          BottomNavigationBarItem(icon: Icon(Icons.today_outlined), label: "Bugün"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.add_call), label: "Yakındakiler"),
-          BottomNavigationBarItem(icon: Icon(Icons.add_call), label: "Tümü"),
+              icon: Icon(Icons.calendar_view_week_outlined), label: "Haftalık"),
+          BottomNavigationBarItem(icon: Icon(Icons.task_rounded), label: "Aylık"),
         ],
       ),
     );

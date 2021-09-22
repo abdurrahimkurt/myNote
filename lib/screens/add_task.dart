@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:date_time_picker/date_time_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:mynote/services/firebase_crud.dart';
 import 'package:mynote/widgets/rounded_input_field.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mynote/widgets/time_picker_widget.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({Key? key}) : super(key: key);
@@ -25,21 +24,25 @@ class _AddTaskState extends State<AddTask> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
         title: Text("Görev Ekle"),
       ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
-              RoundedInputField(
-                  icon: FontAwesomeIcons.edit,
-                  key: null,
-                  hintText: "Görev Adını Giriniz..",
-                  onChanged: (value) {
-                    setState(() {
-                      gorevAdi = value;
-                    });
-                  }),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 18, 8, 8),
+                child: RoundedInputField(
+                    icon: FontAwesomeIcons.edit,
+                    key: null,
+                    hintText: "Görev Adını Giriniz..",
+                    onChanged: (value) {
+                      setState(() {
+                        gorevAdi = value;
+                      });
+                    }),
+              ),
               RoundedInputField(
                   icon: FontAwesomeIcons.edit,
                   key: null,
@@ -49,13 +52,14 @@ class _AddTaskState extends State<AddTask> {
                       gorevAciklamasi = value;
                     });
                   }),
-              TimePickerWidget(
+              /* TimePickerWidget(
                 hintText: "Tarih Seçiniz",
                 onChanged: (value) {
                   gorevTarihi = value;
                 },
-              ),
+              ), */
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
                       onPressed: () {
@@ -81,7 +85,12 @@ class _AddTaskState extends State<AddTask> {
                           print('confirm $gorevTarihi aa');
                         }, currentTime: DateTime.now(), locale: LocaleType.en);
                       },
-                      child: Text("Tarih Seç")),
+                      child: Row(
+                        children: [
+                          Icon(Icons.calendar_today_rounded),
+                          Text("Tarih Seç"),
+                        ],
+                      )),
                   ElevatedButton(
                       onPressed: () {
                         DatePicker.showTimePicker(context,
@@ -93,25 +102,40 @@ class _AddTaskState extends State<AddTask> {
                           print('confirm $gorevSaati');
                         }, currentTime: DateTime.now());
                       },
-                      child: Text("Saat Seç")),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Icon(Icons.watch_later_sharp),
+                          Text("Saat Seç"),
+                        ],
+                      )),
                 ],
               ),
               ElevatedButton(
                   onPressed: () {
-                    Map<String, dynamic> gorevBilgileri = {
-                      'gorevAdi': gorevAdi,
-                      'gorevAciklamasi': gorevAciklamasi,
-                      'gorevTarihi': gorevTarihi,
-                      'gorevSaati': gorevSaati,
-                    };
-                    crud.addData(gorevBilgileri);
-                    print(gorevAdi +
-                        "   " +
-                        gorevAciklamasi +
-                        "    " +
-                        gorevTarihi);
+                    // ignore: unnecessary_null_comparison
+                    if (gorevSaati == null) {
+                      print("Görevin bitiş tarihini giriniz");
+                      // ignore: unnecessary_null_comparison
+                    } else if (gorevTarihi == null) {
+                      print("Görevin bitiş saatini giriniz");
+                    } else {
+                      Map<String, dynamic> gorevBilgileri = {
+                        'gorevAdi': gorevAdi,
+                        'gorevAciklamasi': gorevAciklamasi,
+                        'gorevTarihi': gorevTarihi,
+                        'gorevSaati': gorevSaati,
+                      };
+                      crud.addData(gorevBilgileri);
+                      print(gorevAdi +
+                          "   " +
+                          gorevAciklamasi +
+                          "    " +
+                          gorevTarihi);
+                      print("Görevin bitiş saatini giriniz");
+                    }
                   },
-                  child: Text("Bastır"))
+                  child: Text("Görevi oluştur"))
             ],
           ),
         ),
