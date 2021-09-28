@@ -1,59 +1,17 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
-import 'package:mynote/provider/renkNotifier.dart';
-import 'package:mynote/provider/userNotifier.dart';
-import 'package:mynote/screens/add_task.dart';
-import 'package:mynote/screens/create_User.dart';
-import 'package:mynote/screens/ended_task.dart';
 import 'package:mynote/services/firebase_crud.dart';
-import 'package:provider/provider.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(
-        create: (context) => RenkNotifier(),
-      ),
-      ChangeNotifierProvider(
-        create: (context) => UserNotifier(),
-      ),
-    ],
-    child: MyApp(),
-  ));
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'myNote',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: CreateUser(),
-      routes: {
-        "/home_page": (context) => MyHomePage(),
-        "/add_task": (context) => AddTask(),
-        "/ended_task": (context) => EndedTasks(),
-      },
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+class EndedTasks extends StatefulWidget {
+  EndedTasks({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _EndedTasksState createState() => _EndedTasksState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _EndedTasksState extends State<EndedTasks> {
   CrudMethods crudObj = new CrudMethods();
   late QuerySnapshot task;
   bool isHaveData = false;
@@ -71,91 +29,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title:
-              /* Container(
-              height: 50,
-              width: 40,
-              child: Image.asset(
-                "assets/images/myNotelogos.png",
-                fit: BoxFit.fill,
-              )), */
-              TabBar(
-            labelColor: Colors.red,
-            indicatorColor: Colors.grey,
-            unselectedLabelColor: Colors.grey,
-            tabs: [
-              Tab(
-                text: "Bugün",
-              ),
-              Tab(
-                text: "Haftalık",
-              ),
-              Tab(
-                text: "Aylık",
-              ),
-            ],
-          ),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Geçmiş Görevler",
+          style: TextStyle(color: Colors.grey.shade800),
         ),
-        body: Container(
-          color: Colors.black87,
-          child: Center(
-            child: SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  /* Text(
-                    'Henüz gösterilecek hiçbir görevin bulunmamaktadır.',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "Hemen yeni bir görev oluştur",
-                    style: Theme.of(context).textTheme.headline5,
-                  ), */
-                  Container(
-                    height: size.height * 0.8,
-                    child:
-                        TabBarView(children: [gunluk(), haftalik(), aylik()]),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.red,
-          onPressed: () {
-            Navigator.pushNamed(context, "/add_task");
-          },
-          child: Icon(Icons.add),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.black,
-          unselectedItemColor: Colors.white,
-          fixedColor: Colors.white,
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.notes_outlined), label: "Görevlerim"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.list_alt_outlined), label: "Geçmiş Görevler")
-            /*  BottomNavigationBarItem(icon: Icon(Icons.today_outlined), label: "Bugün"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_view_week_outlined), label: "Haftalık"),
-            BottomNavigationBarItem(icon: Icon(Icons.task_rounded), label: "Aylık"), */
-          ],
-        ),
+        backgroundColor: Colors.black,
       ),
     );
   }
@@ -168,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
             itemCount: task.docs.length,
             padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
             itemBuilder: (context, i) {
-              return (task.docs[i].get("gorevDurumu") == "beklemede")
+              return (task.docs[i].get("gorevDurumu") == "Tamamlandı")
                   ? Card(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
@@ -282,17 +162,5 @@ class _MyHomePageState extends State<MyHomePage> {
             height: _width * 0.5,
             width: _width * 0.5,
             child: CircularProgressIndicator());
-  }
-
-  Widget haftalik() {
-    return Container(
-      color: Colors.yellow,
-    );
-  }
-
-  Widget aylik() {
-    return Container(
-      color: Colors.blue,
-    );
   }
 }

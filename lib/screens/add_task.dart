@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:mynote/provider/userNotifier.dart';
 import 'package:mynote/services/firebase_crud.dart';
 import 'package:mynote/widgets/rounded_input_field.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({Key? key}) : super(key: key);
@@ -156,16 +158,20 @@ class _AddTaskState extends State<AddTask> {
                   width: size.width * 0.4,
                   child: GFButton(
                     onPressed: () {
+                      var userNotifier =
+                            Provider.of<UserNotifier>(context, listen: false);
                       if (gorevAdi == "") {
                         print("Görevin bitiş tarihini giriniz");
                       } else if (gorevAciklamasi == "") {
                         print("Görevin bitiş saatini giriniz");
                       } else {
                         Map<String, dynamic> gorevBilgileri = {
+                          'user' : userNotifier.userName,
                           'gorevAdi': gorevAdi,
                           'gorevAciklamasi': gorevAciklamasi,
                           'gorevTarihi': gorevTarihi,
                           'gorevSaati': gorevSaati,
+                          'gorevDurumu': "beklemede"
                         };
                         crud.addData(gorevBilgileri);
                         print(gorevAdi +
