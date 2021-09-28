@@ -1,0 +1,7 @@
+
+class LocalDatabase {
+
+  databaseCreate(){
+    
+  }
+}
