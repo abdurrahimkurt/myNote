@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/button/gf_button.dart';
+import 'package:mynote/helpers/sharedPref.dart';
+import 'package:mynote/init/lang/locale_keys.g.dart';
+import 'package:mynote/provider/languageNotifier.dart';
 import 'package:mynote/provider/renkNotifier.dart';
 import 'package:mynote/provider/taskNotifier.dart';
 import 'package:mynote/provider/userNotifier.dart';
@@ -18,6 +24,19 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await BaseSharedPrefHelper.preferencesInit();
+  await EasyLocalization.ensureInitialized();
+  bool isFirstLang =
+      BaseSharedPrefHelper.instance.getStringValue("deviceLang") == "en";
+  if (isFirstLang) {
+    var lang = Platform.localeName;
+    if (lang == "tr_TR" || lang == "en_US") {
+      BaseSharedPrefHelper.instance
+          .setStringValue("deviceLang", lang.split("_")[0]);
+    } else {
+      BaseSharedPrefHelper.instance.setStringValue("deviceLang", "tr");
+    }
+  }
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
@@ -29,28 +48,51 @@ Future<void> main() async {
       ChangeNotifierProvider(
         create: (context) => TaskNotifier(),
       ),
+      ChangeNotifierProvider(
+        create: (context) => LanguageNotifier(),
+      ),
     ],
-    child: MyApp(),
+    child: EasyLocalization(
+        child: MyApp(),
+        // supportedLocales: LanguageManager.instance.supportedLocales,
+        supportedLocales: [
+          const Locale('en', 'US'),
+          const Locale('tr', 'TR'),
+          const Locale('de', 'DE'),
+        ],
+        fallbackLocale: Locale('en', 'US'),
+        path: 'assets/lang'),
   ));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'myNote',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: CreateUser(),
-      routes: {
-        "/home_page": (context) => MyHomePage(),
-        "/add_task": (context) => AddTask(),
-        "/ended_task": (context) => EndedTasks(),
-        "/all_task": (context) => AllTasks(),
-      },
-    );
+    var langProvider = Provider.of<LanguageNotifier>(context, listen: false);
+    return Consumer<LanguageNotifier>(builder: (context, lang, widget) {
+      return MaterialApp(
+        localizationsDelegates: context.localizationDelegates,
+        debugShowCheckedModeBanner: false,
+        title: 'myNote',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: CreateUser(),
+        routes: {
+          "/home_page": (context) => MyHomePage(),
+          "/add_task": (context) => AddTask(),
+          "/ended_task": (context) => EndedTasks(),
+          "/all_task": (context) => AllTasks(),
+        },
+        supportedLocales: [
+          const Locale('en', 'US'),
+          const Locale('tr', 'TR'),
+          const Locale('de', 'DE'),
+        ],
+        locale: context.locale,
+      );
+    });
+    ;
   }
 }
 
@@ -67,7 +109,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      var taskNotifier = Provider.of<TaskNotifier>(context, listen: false);
       crudObj.getData(context).then((results) {
         setState(() {
           task = results;
@@ -79,22 +120,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _key = GlobalKey();
     Size size = MediaQuery.of(context).size;
     return Consumer<TaskNotifier>(builder: (context, state, widget) {
       return DefaultTabController(
         length: 3,
         child: Scaffold(
+          key: _key,
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: Colors.black,
-            title:
-                /* Container(
-              height: 50,
-              width: 40,
-              child: Image.asset(
-                "assets/images/myNotelogos.png",
-                fit: BoxFit.fill,
-              )), */
-                TabBar(
+            title: TabBar(
               labelColor: Colors.red,
               indicatorColor: Colors.grey,
               unselectedLabelColor: Colors.grey,
@@ -112,35 +148,64 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             centerTitle: true,
           ),
-          body: Container(
-            color: Colors.black87,
-            child: Center(
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    /* Text(
-                    'Henüz gösterilecek hiçbir görevin bulunmamaktadır.',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "Hemen yeni bir görev oluştur",
-                    style: Theme.of(context).textTheme.headline5,
-                  ), */
-                    Container(
-                      height: size.height * 0.8,
-                      child:
-                          TabBarView(children: [gunluk(), haftalik(), aylik()]),
+          drawer: drawerWidget(),
+          body: Stack(
+            children: [
+              Container(
+                color: Colors.black87,
+                child: Center(
+                  child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        /* Text(
+                        'Henüz gösterilecek hiçbir görevin bulunmamaktadır.',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Hemen yeni bir görev oluştur",
+                        style: Theme.of(context).textTheme.headline5,
+                      ), */
+                        Container(
+                          height: size.height * 0.8,
+                          child: TabBarView(
+                              children: [gunluk(), haftalik(), aylik()]),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              Column(
+                children: [
+                  SizedBox(height: size.height * 0.38),
+                  GestureDetector(
+                    onTap: () {
+                      _key.currentState!.openDrawer();
+                    },
+                    child: Container(
+                      height: size.width * 0.13,
+                      width: size.width * 0.08,
+                      alignment: Alignment.centerLeft,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade500,
+                          border: Border.all(
+                            color: Colors.black,
+                          ),
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              topRight: Radius.circular(50))),
+                      child: Icon(Icons.arrow_forward_ios),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.red,
@@ -181,7 +246,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget gunluk() {
     double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
     return Consumer<TaskNotifier>(builder: (context, state, widget) {
       return (state.isHaveData)
           ? ListView.builder(
@@ -367,7 +431,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget haftalik() {
     double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
     return Consumer<TaskNotifier>(builder: (context, state, widget) {
       return (state.isHaveData)
           ? ListView.builder(
@@ -452,8 +515,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ),
                                         GFButton(
                                           onPressed: () async {
-                                            var today = DateTime.now().toUtc();
-
                                             Map<String, dynamic>
                                                 gorevBilgileri = {
                                               'user': state.task.docs[i]
@@ -508,7 +569,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget aylik() {
     double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
     return Consumer<TaskNotifier>(builder: (context, state, widget) {
       return (state.isHaveData)
           ? ListView.builder(
@@ -710,5 +770,59 @@ class _MyHomePageState extends State<MyHomePage> {
       print(difference.inHours);
       return false;
     }
+  }
+
+  Widget drawerWidget() {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      width: size.width * 0.5,
+      height: size.height,
+      color: Colors.grey.shade800,
+      alignment: Alignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            height: size.height * 0.35,
+            width: size.width * 0.5,
+            alignment: Alignment.center,
+            child: Container(
+              width: size.width * 0.3,
+              height: size.width * 0.3,
+              child: Image.asset(
+                "assets/images/test.png",
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          Container(
+            height: size.height * 0.6,
+            width: size.width * 0.5,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GFButton(
+                  color: Colors.grey.shade500,
+                  onPressed: () {},
+                  text: LocaleKeys.drawer_turkce,
+                ),
+                GFButton(
+                  color: Colors.grey.shade500,
+                  onPressed: () {},
+                  text: "İNGİLİZCE",
+                ),
+                GFButton(
+                  color: Colors.grey.shade500,
+                  onPressed: () {},
+                  text: "ALMANCA",
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

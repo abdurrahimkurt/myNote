@@ -7,6 +7,7 @@ class TaskNotifier with ChangeNotifier {
   bool _isHaveData = false;
   bool get isHaveData => _isHaveData;
   setTask(QuerySnapshot task) {
+    // ignore: unnecessary_null_comparison
     if (task != null && task.docs.length > 0) {
       _task = task;
       _isHaveData = true;

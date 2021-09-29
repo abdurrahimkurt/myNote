@@ -1,10 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:mynote/provider/taskNotifier.dart';
 import 'package:mynote/provider/userNotifier.dart';
 import 'package:mynote/services/firebase_crud.dart';
 import 'package:mynote/widgets/rounded_input_field.dart';
@@ -19,10 +16,10 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
-  late String gorevAdi;
-  late String gorevAciklamasi;
-  late String gorevTarihi;
-  late String gorevSaati;
+  String gorevAdi = "";
+  String gorevAciklamasi = "";
+  String gorevTarihi = "";
+  String gorevSaati = "";
   CrudMethods crud = new CrudMethods();
 
   @override
@@ -69,86 +66,108 @@ class _AddTaskState extends State<AddTask> {
                     ],
                   ),
                 ),
-
-                /* TimePickerWidget(
-                  hintText: "Tarih Seçiniz",
-                  onChanged: (value) {
-                    gorevTarihi = value;
-                  },
-                ), */
                 Container(
                   margin: EdgeInsets.only(top: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      GFButton(
-                        onPressed: () {
-                          DatePicker.showDatePicker(context,
-                              showTitleActions: true,
-                              minTime: DateTime.now(),
-                              maxTime: DateTime(2031, 3, 5),
-                              theme: DatePickerTheme(
-                                  headerColor: Colors.orange,
-                                  backgroundColor: Colors.blue,
-                                  itemStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                  doneStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16)), onChanged: (date) {
-                            print('change $date in time zone ' +
-                                date.timeZoneOffset.inHours.toString());
-                          }, onConfirm: (date) {
-                            gorevTarihi =
-                                date.toUtc().toString().substring(0, 10);
-                            print('confirm $gorevTarihi aa');
-                          },
-                              currentTime: DateTime.now(),
-                              locale: LocaleType.en);
-                        },
-                        text: "Tarih seç",
-                        icon: Icon(Icons.calendar_today_rounded,
-                            color: Colors.white),
-                        shape: GFButtonShape.pills,
-                        size: GFSize.LARGE,
-                        color: Colors.grey.shade800,
+                      Column(
+                        children: [
+                          GFButton(
+                            onPressed: () {
+                              DatePicker.showDatePicker(context,
+                                  showTitleActions: true,
+                                  minTime: DateTime.now(),
+                                  maxTime: DateTime(2031, 3, 5),
+                                  theme: DatePickerTheme(
+                                      itemStyle: TextStyle(
+                                          color: Colors.grey.shade800,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                      doneStyle: TextStyle(
+                                          color: Colors.grey.shade800,
+                                          fontSize: 16)), onChanged: (date) {
+                                print('change $date in time zone ' +
+                                    date.timeZoneOffset.inHours.toString());
+                              }, onConfirm: (date) {
+                                setState(() {
+                                  gorevTarihi =
+                                      date.toUtc().toString().substring(0, 10);
+                                });
+
+                                print('confirm $gorevTarihi aa');
+                              },
+                                  currentTime: DateTime.now(),
+                                  locale: LocaleType.en);
+                            },
+                            text: "Tarih seç",
+                            icon: Icon(Icons.calendar_today_rounded,
+                                color: Colors.white),
+                            shape: GFButtonShape.pills,
+                            size: GFSize.LARGE,
+                            color: Colors.grey.shade800,
+                          ),
+                          (gorevTarihi == "")
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 3.0),
+                                  child: Text(
+                                    "Tarih Seçilmedi",
+                                    style:
+                                        TextStyle(color: Colors.grey.shade500),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.only(top: 3.0),
+                                  child: Text(
+                                    gorevTarihi,
+                                    style:
+                                        TextStyle(color: Colors.grey.shade500),
+                                  ),
+                                )
+                        ],
                       ),
-                      /* ElevatedButton(
-                          onPressed: () {
-                            DatePicker.showTimePicker(context,
-                                showTitleActions: true, onChanged: (date) {
-                              print('change $date in time zone ' +
-                                  date.timeZoneOffset.inHours.toString());
-                            }, onConfirm: (date) {
-                              gorevSaati = date.toString().substring(11, 16);
-                              print('confirm $gorevSaati');
-                            }, currentTime: DateTime.now());
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Icon(Icons.watch_later_sharp),
-                              Text("Saat Seç"),
-                            ],
-                          ),), */
-                      GFButton(
-                        onPressed: () {
-                          DatePicker.showTimePicker(context,
-                              showTitleActions: true, onChanged: (date) {
-                            print('change $date in time zone ' +
-                                date.timeZoneOffset.inHours.toString());
-                          }, onConfirm: (date) {
-                            gorevSaati = date.toString().substring(11, 16);
-                            print('confirm $gorevSaati');
-                          }, currentTime: DateTime.now());
-                        },
-                        text: "Saat seç",
-                        icon:
-                            Icon(Icons.watch_later_sharp, color: Colors.white),
-                        shape: GFButtonShape.pills,
-                        size: GFSize.LARGE,
-                        color: Colors.grey.shade800,
+                      Column(
+                        children: [
+                          GFButton(
+                            onPressed: () {
+                              DatePicker.showTimePicker(context,
+                                  showTitleActions: true, onChanged: (date) {
+                                print('change $date in time zone ' +
+                                    date.timeZoneOffset.inHours.toString());
+                              }, onConfirm: (date) {
+                                setState(() {
+                                  gorevSaati =
+                                      date.toString().substring(11, 16);
+                                });
+
+                                print('confirm $gorevSaati');
+                              }, currentTime: DateTime.now());
+                            },
+                            text: "Saat seç",
+                            icon: Icon(Icons.watch_later_sharp,
+                                color: Colors.white),
+                            shape: GFButtonShape.pills,
+                            size: GFSize.LARGE,
+                            color: Colors.grey.shade800,
+                          ),
+                          (gorevSaati == "")
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 3.0),
+                                  child: Text(
+                                    "Saat Seçilmedi",
+                                    style:
+                                        TextStyle(color: Colors.grey.shade500),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.only(top: 3.0),
+                                  child: Text(
+                                    gorevSaati,
+                                    style:
+                                        TextStyle(color: Colors.grey.shade500),
+                                  ),
+                                )
+                        ],
                       ),
                     ],
                   ),
@@ -162,10 +181,23 @@ class _AddTaskState extends State<AddTask> {
                       var userNotifier =
                           Provider.of<UserNotifier>(context, listen: false);
 
-                      if (gorevAdi == "") {
-                        print("Görevin bitiş tarihini giriniz");
-                      } else if (gorevAciklamasi == "") {
-                        print("Görevin bitiş saatini giriniz");
+                      // ignore: unnecessary_null_comparison
+                      if (gorevAdi == "" || gorevAdi == null) {
+                        showAlertDialog(context,
+                            "Görev Adını Giriniz. Görev Adı Boş Bırakılamaz!");
+                      } else if (gorevAciklamasi == "" ||
+                          // ignore: unnecessary_null_comparison
+                          gorevAciklamasi == null) {
+                        showAlertDialog(context,
+                            "Görev Açıklamasını Giriniz. Görev Açıklaması Boş Bırakılamaz!");
+                        // ignore: unnecessary_null_comparison
+                      } else if (gorevTarihi == "" || gorevTarihi == null) {
+                        showAlertDialog(context,
+                            "Görev Tarihi Giriniz. Görev Tarihi Boş Bırakılamaz!");
+                        // ignore: unnecessary_null_comparison
+                      } else if (gorevSaati == "" || gorevSaati == null) {
+                        showAlertDialog(context,
+                            "Görev Saati Giriniz. Görev Saati Boş Bırakılamaz!");
                       } else {
                         Map<String, dynamic> gorevBilgileri = {
                           'user': userNotifier.userName,
@@ -186,7 +218,7 @@ class _AddTaskState extends State<AddTask> {
                       }
                     },
                     text: "Görev Oluştur",
-                    icon: Icon(Icons.watch_later_sharp, color: Colors.white),
+                    icon: Icon(Icons.add_task_outlined, color: Colors.white),
                     shape: GFButtonShape.pills,
                     size: GFSize.LARGE,
                     color: Colors.grey.shade800,
@@ -197,6 +229,43 @@ class _AddTaskState extends State<AddTask> {
           ),
         ),
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context, String text) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text(
+        "Tamam",
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "HATA",
+        style: TextStyle(color: Colors.white),
+      ),
+      content: Text(
+        text,
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: Colors.grey.shade800,
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

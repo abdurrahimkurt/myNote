@@ -77,7 +77,6 @@ class _EndedTasksState extends State<EndedTasks> {
 
   Widget gecmisTasks() {
     double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
 
     return Consumer<TaskNotifier>(builder: (context, state, widget) {
       return (state.isHaveData)

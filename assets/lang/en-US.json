@@ -1,0 +1,34 @@
+{
+    "drawer": {
+        "turkce": "Turkish",
+        "almanca": "German",
+        "ingilizce": "English"
+    },
+    "bottommenu": {
+        "gorevlerim": "Görevlerim",
+        "gecmisgorevler": "Geçmiş Görevler"
+    },
+    "tabbar": {
+        "bugun": "Bugün",
+        "haftalik": "Haftalık",
+        "aylik": "Aylık"
+    },
+    "tamamlabuton": "Tamamla",
+    "gorevlerimscreen": "Tüm Görevler",
+    "gecmisscreen": "Geçmiş Görevler",
+    "gorevscren": {
+        "gorevekle": "Görev Ekle",
+        "gorevadigir": "Görev Adını Giriniz..",
+        "gorevadihata": "Görev Adını Giriniz. Görev Adı Boş Bırakılamaz!",
+        "gorevaciklamagir": "Görev Açıklamasını Giriniz..",
+        "gorevaciklamahata": "Görev Açıklamasını Giriniz. Görev Açıklaması Boş Bırakılamaz!",
+        "tarihsec": "Tarih Seç",
+        "gorevtarihhata": "Görev Tarihi Giriniz. Görev Tarihi Boş Bırakılamaz!",
+        "saatsec": "SaatSec",
+        "gorevsaathata": "Görev Saati Giriniz. Görev Saati Boş Bırakılamaz!",
+        "gorevolustur": "Görev Oluştur",
+        "tarihsecilmedi": "Tarih Seçilmedi",
+        "saatsecilmedi": "Saat Seçilmedi"
+    },
+    "gorevyok": "Bir görev eklemek için + tuşuna dokun"
+}

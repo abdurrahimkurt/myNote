@@ -77,7 +77,6 @@ class _AllTasksState extends State<AllTasks> {
 
   Widget allTasks() {
     double _width = MediaQuery.of(context).size.width;
-    double _height = MediaQuery.of(context).size.height;
 
     return Consumer<TaskNotifier>(builder: (context, state, widget) {
       return (state.isHaveData)
