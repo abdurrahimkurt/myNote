@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:mynote/provider/taskNotifier.dart';
 import 'package:mynote/provider/userNotifier.dart';
 import 'package:mynote/services/firebase_crud.dart';
 import 'package:mynote/widgets/rounded_input_field.dart';
@@ -84,8 +85,8 @@ class _AddTaskState extends State<AddTask> {
                         onPressed: () {
                           DatePicker.showDatePicker(context,
                               showTitleActions: true,
-                              minTime: DateTime(2018, 3, 5),
-                              maxTime: DateTime(2019, 6, 7),
+                              minTime: DateTime.now(),
+                              maxTime: DateTime(2031, 3, 5),
                               theme: DatePickerTheme(
                                   headerColor: Colors.orange,
                                   backgroundColor: Colors.blue,
@@ -159,14 +160,15 @@ class _AddTaskState extends State<AddTask> {
                   child: GFButton(
                     onPressed: () {
                       var userNotifier =
-                            Provider.of<UserNotifier>(context, listen: false);
+                          Provider.of<UserNotifier>(context, listen: false);
+
                       if (gorevAdi == "") {
                         print("Görevin bitiş tarihini giriniz");
                       } else if (gorevAciklamasi == "") {
                         print("Görevin bitiş saatini giriniz");
                       } else {
                         Map<String, dynamic> gorevBilgileri = {
-                          'user' : userNotifier.userName,
+                          'user': userNotifier.userName,
                           'gorevAdi': gorevAdi,
                           'gorevAciklamasi': gorevAciklamasi,
                           'gorevTarihi': gorevTarihi,
@@ -179,7 +181,8 @@ class _AddTaskState extends State<AddTask> {
                             gorevAciklamasi +
                             "    " +
                             gorevTarihi);
-                        print("Görevi oluştur");
+                        crud.getData(context);
+                        Navigator.pop(context);
                       }
                     },
                     text: "Görev Oluştur",

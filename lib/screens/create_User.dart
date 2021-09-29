@@ -35,7 +35,7 @@ class _CreateUserState extends State<CreateUser> {
       } else {
         _userName = prefs.getString("user")!;
         userNotifier.setUserName(_userName);
-        crud.getData();
+        crud.getData(context);
         pageRoute();
       }
     });
