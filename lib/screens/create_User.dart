@@ -53,13 +53,24 @@ class _CreateUserState extends State<CreateUser> {
         child: (_userName == "newUser")
             ? Container(
                 alignment: Alignment.center,
-                color: Colors.black,
+                color: Colors.grey.shade800,
                 height: size.height,
                 width: size.width,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Container(
+                      height: size.width * 0.4,
+                      width: size.width * 0.4,
+                      child: Image.asset(
+                        "assets/images/test.png",
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.05,
+                    ),
                     RoundedInputField(
                         hintText: "Kullanıcı Adınızı Giriniz..",
                         onChanged: (value) {
@@ -67,19 +78,27 @@ class _CreateUserState extends State<CreateUser> {
                             _newUserName = value;
                           });
                         }),
+                    SizedBox(
+                      height: size.height * 0.03,
+                    ),
                     GFButton(
                       onPressed: () async {
-                        var userNotifier =
-                            Provider.of<UserNotifier>(context, listen: false);
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        prefs.setString("user", _newUserName);
-                        userNotifier.setUserName(_newUserName);
-                        pageRoute();
+                        // ignore: unnecessary_null_comparison
+                        if (_newUserName != "" && _newUserName != null) {
+                          var userNotifier =
+                              Provider.of<UserNotifier>(context, listen: false);
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setString("user", _newUserName);
+                          userNotifier.setUserName(_newUserName);
+                          pageRoute();
+                        } else {
+                          showAlertDialog(context, "Kullanıcı Adını Giriniz!");
+                        }
                       },
                       child: Text("GİRİŞ"),
                       size: GFSize.LARGE,
-                      color: Colors.grey.shade800,
+                      color: Colors.grey.shade900,
                     ),
                   ],
                 ),
@@ -91,6 +110,43 @@ class _CreateUserState extends State<CreateUser> {
                 width: size.width,
                 child: CircularProgressIndicator()),
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context, String text) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text(
+        "Tamam",
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        "HATA",
+        style: TextStyle(color: Colors.white),
+      ),
+      content: Text(
+        text,
+        style: TextStyle(color: Colors.white),
+      ),
+      backgroundColor: Colors.grey.shade800,
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

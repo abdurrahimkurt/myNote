@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:mynote/helpers/sharedPref.dart';
-import 'package:mynote/init/lang/locale_keys.g.dart';
+import 'package:mynote/init/generated/codegen_loader.g.dart';
+import 'package:mynote/init/generated/locale_keys.g.dart';
 import 'package:mynote/provider/languageNotifier.dart';
 import 'package:mynote/provider/renkNotifier.dart';
 import 'package:mynote/provider/taskNotifier.dart';
@@ -53,22 +54,23 @@ Future<void> main() async {
       ),
     ],
     child: EasyLocalization(
-        child: MyApp(),
-        // supportedLocales: LanguageManager.instance.supportedLocales,
-        supportedLocales: [
-          const Locale('en', 'US'),
-          const Locale('tr', 'TR'),
-          const Locale('de', 'DE'),
-        ],
-        fallbackLocale: Locale('en', 'US'),
-        path: 'assets/lang'),
+      child: MyApp(),
+      // supportedLocales: LanguageManager.instance.supportedLocales,
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('tr', 'TR'),
+        const Locale('de', 'DE'),
+      ],
+      fallbackLocale: Locale('en', 'US'),
+      path: 'assets/lang',
+      assetLoader: CodegenLoader(),
+    ),
   ));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var langProvider = Provider.of<LanguageNotifier>(context, listen: false);
     return Consumer<LanguageNotifier>(builder: (context, lang, widget) {
       return MaterialApp(
         localizationsDelegates: context.localizationDelegates,
@@ -92,7 +94,6 @@ class MyApp extends StatelessWidget {
         locale: context.locale,
       );
     });
-    ;
   }
 }
 
@@ -805,18 +806,26 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 GFButton(
                   color: Colors.grey.shade500,
-                  onPressed: () {},
-                  text: LocaleKeys.drawer_turkce,
+                  onPressed: () async {
+                    await context.setLocale(Locale('tr', 'TR'));
+                  },
+                  text: LocaleKeys.drawer_turkce.tr(),
+
+                  ///BU ŞEKİLDE SONUNA .tr() KOYARAK YAZILACAK HER YERE
                 ),
                 GFButton(
                   color: Colors.grey.shade500,
-                  onPressed: () {},
-                  text: "İNGİLİZCE",
+                  onPressed: ()async {
+                    await context.setLocale(Locale('en', 'US'));
+                  },
+                  text: LocaleKeys.drawer_ingilizce.tr(),
                 ),
                 GFButton(
                   color: Colors.grey.shade500,
-                  onPressed: () {},
-                  text: "ALMANCA",
+                  onPressed: () async{
+                    await context.setLocale(Locale('de', 'DE'));
+                  },
+                  text: LocaleKeys.drawer_almanca.tr(),
                 ),
               ],
             ),
