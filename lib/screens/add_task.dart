@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:mynote/provider/userNotifier.dart';
@@ -21,6 +22,49 @@ class _AddTaskState extends State<AddTask> {
   String gorevTarihi = "";
   String gorevSaati = "";
   CrudMethods crud = new CrudMethods();
+  FlutterLocalNotificationsPlugin fltrNotification =
+      new FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      var initializationSettingsAndroid =
+          new AndroidInitializationSettings('app_icon');
+      var initilizationsSettings =
+          new InitializationSettings(android: initializationSettingsAndroid);
+      fltrNotification.initialize(initilizationsSettings,
+          onSelectNotification: notificationSelected);
+    });
+    super.initState();
+  }
+
+  Future notificationSelected(String? payload) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text(
+          "Yaklaşan Göreviniz Var!!",
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  Future _bildirimGonder(String gorevTarih, String gorevSaat) async {
+    DateTime tarih = DateTime.parse("$gorevTarih $gorevSaat:00.000000");
+    ////Bildirim Fonksiyonu
+    var androidDetails = new AndroidNotificationDetails(
+        "Piton", "myNote", "Bildirim",
+        importance: Importance.max);
+    var iOSDetails = new IOSNotificationDetails();
+    var generalNotificationDetails =
+        new NotificationDetails(android: androidDetails, iOS: iOSDetails);
+    var scheduledTime = tarih.add(Duration(seconds: 5));
+    print("Tarih ::: " + scheduledTime.toString());
+    // ignore: deprecated_member_use
+    fltrNotification.schedule(1, gorevAdi, gorevAciklamasi, scheduledTime,
+        generalNotificationDetails);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +78,7 @@ class _AddTaskState extends State<AddTask> {
       body: Container(
         /* height: size.height,
         width: size.width, */
-        color: Colors.black,
+        color: Colors.grey.shade900,
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -199,6 +243,8 @@ class _AddTaskState extends State<AddTask> {
                         showAlertDialog(context,
                             "Görev Saati Giriniz. Görev Saati Boş Bırakılamaz!");
                       } else {
+                        _bildirimGonder(gorevTarihi, gorevSaati);
+                        print(gorevSaati);
                         Map<String, dynamic> gorevBilgileri = {
                           'user': userNotifier.userName,
                           'gorevAdi': gorevAdi,

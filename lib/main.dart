@@ -1,14 +1,15 @@
 import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:mynote/helpers/sharedPref.dart';
-import 'package:mynote/init/lang/locale_keys.g.dart';
+import 'package:mynote/init/generated/codegen_loader.g.dart';
+import 'package:mynote/init/generated/locale_keys.g.dart';
 import 'package:mynote/provider/languageNotifier.dart';
 import 'package:mynote/provider/renkNotifier.dart';
 import 'package:mynote/provider/taskNotifier.dart';
@@ -20,6 +21,8 @@ import 'package:mynote/screens/empty_project.dart';
 import 'package:mynote/screens/ended_task.dart';
 import 'package:mynote/services/firebase_crud.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,22 +56,23 @@ Future<void> main() async {
       ),
     ],
     child: EasyLocalization(
-        child: MyApp(),
-        // supportedLocales: LanguageManager.instance.supportedLocales,
-        supportedLocales: [
-          const Locale('en', 'US'),
-          const Locale('tr', 'TR'),
-          const Locale('de', 'DE'),
-        ],
-        fallbackLocale: Locale('en', 'US'),
-        path: 'assets/lang'),
+      child: MyApp(),
+      // supportedLocales: LanguageManager.instance.supportedLocales,
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('tr', 'TR'),
+        const Locale('de', 'DE'),
+      ],
+      fallbackLocale: Locale('en', 'US'),
+      path: 'assets/lang',
+      assetLoader: CodegenLoader(),
+    ),
   ));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var langProvider = Provider.of<LanguageNotifier>(context, listen: false);
     return Consumer<LanguageNotifier>(builder: (context, lang, widget) {
       return MaterialApp(
         localizationsDelegates: context.localizationDelegates,
@@ -92,7 +96,6 @@ class MyApp extends StatelessWidget {
         locale: context.locale,
       );
     });
-    ;
   }
 }
 
@@ -295,7 +298,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     : Container(),
                                                 Container(
                                                   width: _width * 0.4,
-                                                  child: Flexible(
+                                                  child: Container(
                                                     child: AutoSizeText(
                                                       state.task.docs[i]
                                                           .get("gorevAdi"),
@@ -317,7 +320,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 child: Row(
                                                   children: [
                                                     Container(
-                                                      child: Flexible(
+                                                      child: Container(
                                                         child: AutoSizeText(
                                                             state.task.docs[i].get(
                                                                     "gorevTarihi") +
@@ -342,7 +345,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       ),
                                                     ),
                                                     Container(
-                                                      child: Flexible(
+                                                      child: Container(
                                                         child: AutoSizeText(
                                                             state.task.docs[i]
                                                                 .get(
@@ -408,7 +411,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                     Container(
                                       width: _width * 0.8,
-                                      child: Flexible(
+                                      child: Container(
                                         child: AutoSizeText(
                                           state.task.docs[i]
                                               .get("gorevAciklamasi"),
@@ -466,7 +469,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           children: [
                                             Container(
                                               width: _width * 0.6,
-                                              child: Flexible(
+                                              child: Container(
                                                 child: AutoSizeText(
                                                   state.task.docs[i]
                                                       .get("gorevAdi"),
@@ -486,7 +489,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 child: Row(
                                                   children: [
                                                     Container(
-                                                      child: Flexible(
+                                                      child: Container(
                                                         child: AutoSizeText(
                                                           state.task.docs[i].get(
                                                                   "gorevTarihi") +
@@ -497,7 +500,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       ),
                                                     ),
                                                     Container(
-                                                      child: Flexible(
+                                                      child: Container(
                                                         child: AutoSizeText(
                                                           state.task.docs[i]
                                                               .get(
@@ -546,7 +549,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                     Container(
                                       width: _width * 0.8,
-                                      child: Flexible(
+                                      child: Container(
                                         child: AutoSizeText(
                                           state.task.docs[i]
                                               .get("gorevAciklamasi"),
@@ -604,7 +607,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           children: [
                                             Container(
                                               width: _width * 0.6,
-                                              child: Flexible(
+                                              child: Container(
                                                 child: AutoSizeText(
                                                   state.task.docs[i]
                                                       .get("gorevAdi"),
@@ -624,7 +627,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 child: Row(
                                                   children: [
                                                     Container(
-                                                      child: Flexible(
+                                                      child: Container(
                                                         child: AutoSizeText(
                                                           state.task.docs[i].get(
                                                                   "gorevTarihi") +
@@ -635,7 +638,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       ),
                                                     ),
                                                     Container(
-                                                      child: Flexible(
+                                                      child: Container(
                                                         child: AutoSizeText(
                                                           state.task.docs[i]
                                                               .get(
@@ -684,7 +687,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                     Container(
                                       width: _width * 0.8,
-                                      child: Flexible(
+                                      child: Container(
                                         child: AutoSizeText(
                                           state.task.docs[i]
                                               .get("gorevAciklamasi"),
@@ -772,6 +775,19 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<void> launchInBrowser(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   Widget drawerWidget() {
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -787,36 +803,115 @@ class _MyHomePageState extends State<MyHomePage> {
             height: size.height * 0.35,
             width: size.width * 0.5,
             alignment: Alignment.center,
-            child: Container(
-              width: size.width * 0.3,
-              height: size.width * 0.3,
-              child: Image.asset(
-                "assets/images/test.png",
-                fit: BoxFit.fill,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: size.width * 0.3,
+                  height: size.width * 0.3,
+                  child: Image.asset(
+                    "assets/images/test.png",
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                Text(
+                  "myNote",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: size.height * 0.035,
+                  ),
+                )
+              ],
             ),
           ),
           Container(
             height: size.height * 0.6,
             width: size.width * 0.5,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                GFButton(
-                  color: Colors.grey.shade500,
-                  onPressed: () {},
-                  text: LocaleKeys.drawer_turkce,
+                Stack(
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: [
+                          GFButton(
+                            color: Colors.grey.shade500,
+                            onPressed: () async {
+                              await context.setLocale(Locale('tr', 'TR'));
+                            },
+                            text: LocaleKeys.drawer_turkce.tr(),
+
+                            ///BU ŞEKİLDE SONUNA .tr() KOYARAK YAZILACAK HER YERE
+                          ),
+                          GFButton(
+                            color: Colors.grey.shade500,
+                            onPressed: () async {
+                              await context.setLocale(Locale('en', 'US'));
+                            },
+                            text: LocaleKeys.drawer_ingilizce.tr(),
+                          ),
+                          GFButton(
+                            color: Colors.grey.shade500,
+                            onPressed: () async {
+                              await context.setLocale(Locale('de', 'DE'));
+                            },
+                            text: LocaleKeys.drawer_almanca.tr(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: size.width * 0.13,
+                        width: size.width * 0.08,
+                        margin: EdgeInsets.only(
+                            left: (size.width * 0.5) - size.width * 0.08,
+                            top: size.width * 0.13),
+                        alignment: Alignment.centerRight,
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade500,
+                            border: Border.all(
+                              color: Colors.black,
+                            ),
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(50),
+                                topLeft: Radius.circular(50))),
+                        child: Icon(Icons.arrow_back_ios),
+                      ),
+                    ),
+                  ],
                 ),
-                GFButton(
-                  color: Colors.grey.shade500,
-                  onPressed: () {},
-                  text: "İNGİLİZCE",
+                SizedBox(
+                  height: size.height * 0.2,
                 ),
-                GFButton(
-                  color: Colors.grey.shade500,
-                  onPressed: () {},
-                  text: "ALMANCA",
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GFButton(
+                      color: Colors.transparent,
+                      onPressed: () async {
+                        launchInBrowser(
+                            "http://www.linkedin.com/in/abdurrahimkurt");
+                      },
+                      child: Image.asset("assets/images/linkedin.png"),
+                    ),
+                    GFButton(
+                      color: Colors.transparent,
+                      onPressed: () async {
+                        launchInBrowser("https://github.com/abdurrahimkurt");
+                      },
+                      child: Image.asset("assets/images/github.png"),
+                    ),
+                  ],
                 ),
               ],
             ),

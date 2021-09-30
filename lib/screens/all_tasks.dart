@@ -115,7 +115,7 @@ class _AllTasksState extends State<AllTasks> {
                                       Container(
                                         width: _width * 0.4,
                                         alignment: Alignment.centerLeft,
-                                        child: Flexible(
+                                        child: Container(
                                           child: AutoSizeText(
                                             state.task.docs[i].get("gorevAdi"),
                                             presetFontSizes: [14],
@@ -134,7 +134,7 @@ class _AllTasksState extends State<AllTasks> {
                                             children: [
                                               Container(
                                                 alignment: Alignment.centerLeft,
-                                                child: Flexible(
+                                                child: Container(
                                                   child: AutoSizeText(
                                                     state.task.docs[i].get(
                                                             "gorevTarihi") +
@@ -157,7 +157,7 @@ class _AllTasksState extends State<AllTasks> {
                                                 ),
                                               ),
                                               Container(
-                                                child: Flexible(
+                                                child: Container(
                                                   child: AutoSizeText(
                                                     state.task.docs[i]
                                                         .get("gorevSaati"),
@@ -204,7 +204,7 @@ class _AllTasksState extends State<AllTasks> {
                           ),
                           Container(
                             width: _width * 0.8,
-                            child: Flexible(
+                            child: Container(
                               child: AutoSizeText(
                                 state.task.docs[i].get("gorevAciklamasi"),
                                 presetFontSizes: [12],
