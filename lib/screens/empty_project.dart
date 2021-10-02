@@ -1,4 +1,7 @@
+// ignore: implementation_imports
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
+import 'package:mynote/init/generated/locale_keys.g.dart';
 
 class EmptyProjectPage extends StatefulWidget {
   @override
@@ -21,7 +24,7 @@ class _EmptyProjectPageState extends State<EmptyProjectPage> {
               ),
             ),
             Text(
-              "Proje Yoktur",
+              LocaleKeys.emptypage_noproject.tr(),
               style: TextStyle(fontSize: 22, color: Colors.white),
             ),
             SizedBox(

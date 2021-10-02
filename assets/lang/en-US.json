@@ -1,34 +1,46 @@
 {
+    "firstscreen": {
+        "kullaniciadi": "Enter your username..",
+        "giris": "LOGIN",
+        "kullaniciuyari":"Enter Username!!"
+
+    },
+    "emptypage":{
+        "noproject":"In this section, the tasks that belong to you are listed. And you can create new tasks by pressing the '+' button on the right."
+        
+        },
     "drawer": {
         "turkce": "Turkish",
         "almanca": "German",
         "ingilizce": "English"
     },
     "bottommenu": {
-        "gorevlerim": "Görevlerim",
-        "gecmisgorevler": "Geçmiş Görevler"
+        "gorevlerim": "Tasks",
+        "gecmisgorevler": "Past Tasks"
     },
     "tabbar": {
-        "bugun": "Bugün",
-        "haftalik": "Haftalık",
-        "aylik": "Aylık"
+        "bugun": "Today",
+        "haftalik": "Weekly",
+        "aylik": "Monthly"
     },
-    "tamamlabuton": "Tamamla",
-    "gorevlerimscreen": "Tüm Görevler",
-    "gecmisscreen": "Geçmiş Görevler",
+    "tamamlabuton": "Complete",
+    "gorevlerimscreen": "All Tasks",
+    "gecmisscreen": "Past Tasks",
     "gorevscren": {
-        "gorevekle": "Görev Ekle",
-        "gorevadigir": "Görev Adını Giriniz..",
-        "gorevadihata": "Görev Adını Giriniz. Görev Adı Boş Bırakılamaz!",
-        "gorevaciklamagir": "Görev Açıklamasını Giriniz..",
-        "gorevaciklamahata": "Görev Açıklamasını Giriniz. Görev Açıklaması Boş Bırakılamaz!",
-        "tarihsec": "Tarih Seç",
-        "gorevtarihhata": "Görev Tarihi Giriniz. Görev Tarihi Boş Bırakılamaz!",
-        "saatsec": "SaatSec",
-        "gorevsaathata": "Görev Saati Giriniz. Görev Saati Boş Bırakılamaz!",
-        "gorevolustur": "Görev Oluştur",
-        "tarihsecilmedi": "Tarih Seçilmedi",
-        "saatsecilmedi": "Saat Seçilmedi"
+        "gorevekle": "Add Task",
+        "gorevadigir": "Enter the Task Name..",
+        "gorevadihata": "Enter Task Name. Task Name Cannot Be Blank!",
+        "gorevaciklamagir": "Enter Task Description..",
+        "gorevaciklamahata": "Enter Task Description. Task Description Cannot be left blank!",
+        "tarihsec": "Select Date",
+        "gorevtarihhata": "Enter Mission Date. Task Date Cannot Be Blank!",
+        "saatsec": "Select Time",
+        "gorevsaathata": "Enter Task Time. Task Time Cannot Be Empty!",
+        "gorevolustur": "Create Task",
+        "tarihsecilmedi": "No Date Selected",
+        "saatsecilmedi": "No Time Selected"
     },
-    "gorevyok": "Bir görev eklemek için + tuşuna dokun"
+    "gorevyok": "Tap + to add a task",
+    "tamam":"OK",
+    "hata":"ERROR"
 }

@@ -1,8 +1,11 @@
+// ignore: implementation_imports
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:mynote/init/generated/locale_keys.g.dart';
 import 'package:mynote/provider/userNotifier.dart';
 import 'package:mynote/services/firebase_crud.dart';
 import 'package:mynote/widgets/rounded_input_field.dart';
@@ -60,7 +63,7 @@ class _AddTaskState extends State<AddTask> {
     var generalNotificationDetails =
         new NotificationDetails(android: androidDetails, iOS: iOSDetails);
     var scheduledTime = tarih.add(Duration(seconds: 5));
-    print("Tarih ::: " + scheduledTime.toString());
+    //print("Tarih ::: " + scheduledTime.toString());
     // ignore: deprecated_member_use
     fltrNotification.schedule(1, gorevAdi, gorevAciklamasi, scheduledTime,
         generalNotificationDetails);
@@ -72,12 +75,10 @@ class _AddTaskState extends State<AddTask> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text("Görev Ekle"),
+        title: Text(LocaleKeys.gorevscren_gorevekle.tr()),
         centerTitle: true,
       ),
       body: Container(
-        /* height: size.height,
-        width: size.width, */
         color: Colors.grey.shade900,
         child: Center(
           child: SingleChildScrollView(
@@ -92,7 +93,7 @@ class _AddTaskState extends State<AddTask> {
                       RoundedInputField(
                           icon: FontAwesomeIcons.edit,
                           key: null,
-                          hintText: "Görev Adını Giriniz..",
+                          hintText: LocaleKeys.gorevscren_gorevadigir.tr(),
                           onChanged: (value) {
                             setState(() {
                               gorevAdi = value;
@@ -101,7 +102,7 @@ class _AddTaskState extends State<AddTask> {
                       RoundedInputField(
                           icon: FontAwesomeIcons.edit,
                           key: null,
-                          hintText: "Görev Açıklamasını Giriniz..",
+                          hintText: LocaleKeys.gorevscren_gorevaciklamagir.tr(),
                           onChanged: (value) {
                             setState(() {
                               gorevAciklamasi = value;
@@ -131,20 +132,20 @@ class _AddTaskState extends State<AddTask> {
                                       doneStyle: TextStyle(
                                           color: Colors.grey.shade800,
                                           fontSize: 16)), onChanged: (date) {
-                                print('change $date in time zone ' +
-                                    date.timeZoneOffset.inHours.toString());
+                                /* print('change $date in time zone ' +
+                                    date.timeZoneOffset.inHours.toString()); */
                               }, onConfirm: (date) {
                                 setState(() {
                                   gorevTarihi =
                                       date.toUtc().toString().substring(0, 10);
                                 });
 
-                                print('confirm $gorevTarihi aa');
+                                //print('confirm $gorevTarihi aa');
                               },
                                   currentTime: DateTime.now(),
                                   locale: LocaleType.en);
                             },
-                            text: "Tarih seç",
+                            text: LocaleKeys.gorevscren_tarihsec.tr(),
                             icon: Icon(Icons.calendar_today_rounded,
                                 color: Colors.white),
                             shape: GFButtonShape.pills,
@@ -155,7 +156,7 @@ class _AddTaskState extends State<AddTask> {
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 3.0),
                                   child: Text(
-                                    "Tarih Seçilmedi",
+                                    LocaleKeys.gorevscren_tarihsecilmedi.tr(),
                                     style:
                                         TextStyle(color: Colors.grey.shade500),
                                   ),
@@ -176,18 +177,18 @@ class _AddTaskState extends State<AddTask> {
                             onPressed: () {
                               DatePicker.showTimePicker(context,
                                   showTitleActions: true, onChanged: (date) {
-                                print('change $date in time zone ' +
-                                    date.timeZoneOffset.inHours.toString());
+                                /* print('change $date in time zone ' +
+                                    date.timeZoneOffset.inHours.toString()); */
                               }, onConfirm: (date) {
                                 setState(() {
                                   gorevSaati =
                                       date.toString().substring(11, 16);
                                 });
 
-                                print('confirm $gorevSaati');
+                                //print('confirm $gorevSaati');
                               }, currentTime: DateTime.now());
                             },
-                            text: "Saat seç",
+                            text: LocaleKeys.gorevscren_saatsec.tr(),
                             icon: Icon(Icons.watch_later_sharp,
                                 color: Colors.white),
                             shape: GFButtonShape.pills,
@@ -198,7 +199,7 @@ class _AddTaskState extends State<AddTask> {
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 3.0),
                                   child: Text(
-                                    "Saat Seçilmedi",
+                                    LocaleKeys.gorevscren_saatsecilmedi.tr(),
                                     style:
                                         TextStyle(color: Colors.grey.shade500),
                                   ),
@@ -227,24 +228,24 @@ class _AddTaskState extends State<AddTask> {
 
                       // ignore: unnecessary_null_comparison
                       if (gorevAdi == "" || gorevAdi == null) {
-                        showAlertDialog(context,
-                            "Görev Adını Giriniz. Görev Adı Boş Bırakılamaz!");
+                        showAlertDialog(
+                            context, LocaleKeys.gorevscren_gorevadihata.tr());
                       } else if (gorevAciklamasi == "" ||
                           // ignore: unnecessary_null_comparison
                           gorevAciklamasi == null) {
                         showAlertDialog(context,
-                            "Görev Açıklamasını Giriniz. Görev Açıklaması Boş Bırakılamaz!");
+                            LocaleKeys.gorevscren_gorevaciklamahata.tr());
                         // ignore: unnecessary_null_comparison
                       } else if (gorevTarihi == "" || gorevTarihi == null) {
-                        showAlertDialog(context,
-                            "Görev Tarihi Giriniz. Görev Tarihi Boş Bırakılamaz!");
+                        showAlertDialog(
+                            context, LocaleKeys.gorevscren_gorevtarihhata.tr());
                         // ignore: unnecessary_null_comparison
                       } else if (gorevSaati == "" || gorevSaati == null) {
-                        showAlertDialog(context,
-                            "Görev Saati Giriniz. Görev Saati Boş Bırakılamaz!");
+                        showAlertDialog(
+                            context, LocaleKeys.gorevscren_gorevsaathata.tr());
                       } else {
                         _bildirimGonder(gorevTarihi, gorevSaati);
-                        print(gorevSaati);
+                        //print(gorevSaati);
                         Map<String, dynamic> gorevBilgileri = {
                           'user': userNotifier.userName,
                           'gorevAdi': gorevAdi,
@@ -254,16 +255,16 @@ class _AddTaskState extends State<AddTask> {
                           'gorevDurumu': "beklemede"
                         };
                         crud.addData(gorevBilgileri);
-                        print(gorevAdi +
+                        /* print(gorevAdi +
                             "   " +
                             gorevAciklamasi +
                             "    " +
-                            gorevTarihi);
+                            gorevTarihi); */
                         crud.getData(context);
                         Navigator.pop(context);
                       }
                     },
-                    text: "Görev Oluştur",
+                    text: LocaleKeys.gorevscren_gorevolustur.tr(),
                     icon: Icon(Icons.add_task_outlined, color: Colors.white),
                     shape: GFButtonShape.pills,
                     size: GFSize.LARGE,
@@ -282,7 +283,7 @@ class _AddTaskState extends State<AddTask> {
     // set up the button
     Widget okButton = TextButton(
       child: Text(
-        "Tamam",
+        LocaleKeys.tamam.tr(),
         style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
@@ -293,7 +294,7 @@ class _AddTaskState extends State<AddTask> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text(
-        "HATA",
+       LocaleKeys.hata.tr(),
         style: TextStyle(color: Colors.white),
       ),
       content: Text(

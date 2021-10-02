@@ -1,4 +1,12 @@
 {
+    "firstscreen": {
+        "kullaniciadi": "Kullanıcı adınızı giriniz..",
+        "giris": "GİRİŞ",
+        "kullaniciuyari": "Kullanıcı Adını Giriniz!!"
+    },
+    "emptypage": {
+        "noproject": "Sağ tarafta bulunan '+' butonuna basarak yeni görevler oluşturabilirsiniz"
+    },
     "drawer": {
         "turkce": "Türkçe",
         "almanca": "Almanca",
@@ -24,11 +32,13 @@
         "gorevaciklamahata": "Görev Açıklamasını Giriniz. Görev Açıklaması Boş Bırakılamaz!",
         "tarihsec": "Tarih Seç",
         "gorevtarihhata": "Görev Tarihi Giriniz. Görev Tarihi Boş Bırakılamaz!",
-        "saatsec": "SaatSec",
+        "saatsec": "Saat Seç",
         "gorevsaathata": "Görev Saati Giriniz. Görev Saati Boş Bırakılamaz!",
         "gorevolustur": "Görev Oluştur",
         "tarihsecilmedi": "Tarih Seçilmedi",
         "saatsecilmedi": "Saat Seçilmedi"
     },
-    "gorevyok": "Bir görev eklemek için + tuşuna dokun"
+    "gorevyok": "Bir görev eklemek için + tuşuna dokun",
+    "tamam":"Tamam",
+    "hata":"HATA"
 }

@@ -11,12 +11,12 @@ class TaskNotifier with ChangeNotifier {
     if (task != null && task.docs.length > 0) {
       _task = task;
       _isHaveData = true;
-      print("task güncellendi");
+      //print("task güncellendi");
     } else if (task.docs.length < 1) {
       _isHaveData = false;
     } else {
       _isHaveData = true;
-      print("task güncellenemedi");
+      //print("task güncellenemedi");
     }
 
     notifyListeners();

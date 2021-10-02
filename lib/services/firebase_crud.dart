@@ -13,7 +13,7 @@ class CrudMethods {
         .collection('/gorevler')
         .add(gorev)
         .catchError((e) {
-      print(e);
+      //print(e);
     });
   }
 

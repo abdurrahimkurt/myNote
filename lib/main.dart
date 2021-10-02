@@ -10,6 +10,7 @@ import 'package:getwidget/components/button/gf_button.dart';
 import 'package:mynote/helpers/sharedPref.dart';
 import 'package:mynote/init/generated/codegen_loader.g.dart';
 import 'package:mynote/init/generated/locale_keys.g.dart';
+
 import 'package:mynote/provider/languageNotifier.dart';
 import 'package:mynote/provider/renkNotifier.dart';
 import 'package:mynote/provider/taskNotifier.dart';
@@ -21,6 +22,7 @@ import 'package:mynote/screens/empty_project.dart';
 import 'package:mynote/screens/ended_task.dart';
 import 'package:mynote/services/firebase_crud.dart';
 import 'package:provider/provider.dart';
+// ignore: unused_import
 import 'package:url_launcher/link.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -139,13 +141,13 @@ class _MyHomePageState extends State<MyHomePage> {
               unselectedLabelColor: Colors.grey,
               tabs: [
                 Tab(
-                  text: "Bugün",
+                  text: LocaleKeys.tabbar_bugun.tr(),
                 ),
                 Tab(
-                  text: "Haftalık",
+                  text: LocaleKeys.tabbar_haftalik.tr(),
                 ),
                 Tab(
-                  text: "Aylık",
+                  text: LocaleKeys.tabbar_aylik.tr(),
                 ),
               ],
             ),
@@ -163,17 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        /* Text(
-                        'Henüz gösterilecek hiçbir görevin bulunmamaktadır.',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Hemen yeni bir görev oluştur",
-                        style: Theme.of(context).textTheme.headline5,
-                      ), */
+                        
                         Container(
                           height: size.height * 0.8,
                           child: TabBarView(
@@ -225,13 +217,10 @@ class _MyHomePageState extends State<MyHomePage> {
             onTap: (i) => sayfaCagir(i),
             items: [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.notes_outlined), label: "Görevlerim"),
+                  icon: Icon(Icons.notes_outlined), label: LocaleKeys.bottommenu_gorevlerim.tr()),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.list_alt_outlined), label: "Geçmiş Görevler")
-              /*  BottomNavigationBarItem(icon: Icon(Icons.today_outlined), label: "Bugün"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_view_week_outlined), label: "Haftalık"),
-            BottomNavigationBarItem(icon: Icon(Icons.task_rounded), label: "Aylık"), */
+                  icon: Icon(Icons.list_alt_outlined), label: LocaleKeys.bottommenu_gecmisgorevler.tr())
+              
             ],
           ),
         ),
@@ -397,7 +386,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                                             crudObj.getData(context);
                                           },
-                                          child: Text("Tamamla"),
+                                          child: Text(LocaleKeys.tamamlabuton.tr()),
                                           color: (isGecmisGorev(i, state.task))
                                               ? Colors.red
                                               : Colors.grey.shade800,
@@ -537,7 +526,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 state.task.docs[i].id);
                                             crudObj.getData(context);
                                           },
-                                          child: Text("Tamamla"),
+                                          child: Text(LocaleKeys.tamamlabuton.tr()),
                                           color: Colors.grey.shade800,
                                           padding: EdgeInsets.zero,
                                         )
@@ -675,7 +664,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 state.task.docs[i].id);
                                             crudObj.getData(context);
                                           },
-                                          child: Text("Tamamla"),
+                                          child: Text(LocaleKeys.tamamlabuton.tr()),
                                           color: Colors.grey.shade800,
                                           padding: EdgeInsets.zero,
                                         )
@@ -763,14 +752,14 @@ class _MyHomePageState extends State<MyHomePage> {
     var dakika = task.docs[i].get("gorevSaati").substring(3, 5);
     var gorevTime = DateTime.utc(int.parse(yil), ayBelirle(int.parse(ay)),
         int.parse(gun), int.parse(saat), int.parse(dakika));
-    print(saat);
-    print(dakika);
+    //print(saat);
+    //print(dakika);
     Duration difference = gorevTime.difference(today);
     if (difference.inHours <= zaman) {
-      print(difference.inHours);
+      //print(difference.inHours);
       return true;
     } else {
-      print(difference.inHours);
+      //print(difference.inHours);
       return false;
     }
   }

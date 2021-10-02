@@ -17,7 +17,7 @@ class RenkNotifier with ChangeNotifier {
   setisOpen() {
     (_isOpen) ? _isOpen = false : _isOpen = true;
     notifyListeners();
-    print(_isOpen);
+    //print(_isOpen);
   }
 
   setColor(int button) {

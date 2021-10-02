@@ -1,7 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: implementation_imports
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mynote/init/generated/locale_keys.g.dart';
 import 'package:mynote/provider/taskNotifier.dart';
 import 'package:mynote/screens/empty_project.dart';
 import 'package:mynote/services/firebase_crud.dart';
@@ -36,7 +39,7 @@ class _EndedTasksState extends State<EndedTasks> {
       return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Geçmiş Görevler",
+            LocaleKeys.bottommenu_gecmisgorevler.tr(),
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
@@ -51,17 +54,7 @@ class _EndedTasksState extends State<EndedTasks> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  /* Text(
-                    'Henüz gösterilecek hiçbir görevin bulunmamaktadır.',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "Hemen yeni bir görev oluştur",
-                    style: Theme.of(context).textTheme.headline5,
-                  ), */
+                
                   Container(
                     height: size.height * 0.8,
                     child: gecmisTasks(),

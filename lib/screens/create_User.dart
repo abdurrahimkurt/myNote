@@ -1,6 +1,9 @@
+// ignore: implementation_imports
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:mynote/init/generated/locale_keys.g.dart';
 import 'package:mynote/provider/userNotifier.dart';
 import 'package:mynote/services/firebase_crud.dart';
 import 'package:mynote/widgets/rounded_input_field.dart';
@@ -72,7 +75,7 @@ class _CreateUserState extends State<CreateUser> {
                       height: size.height * 0.05,
                     ),
                     RoundedInputField(
-                        hintText: "Kullanıcı Adınızı Giriniz..",
+                        hintText: LocaleKeys.firstscreen_kullaniciadi.tr(),
                         onChanged: (value) {
                           setState(() {
                             _newUserName = value;
@@ -93,10 +96,11 @@ class _CreateUserState extends State<CreateUser> {
                           userNotifier.setUserName(_newUserName);
                           pageRoute();
                         } else {
-                          showAlertDialog(context, "Kullanıcı Adını Giriniz!");
+                          showAlertDialog(context,
+                              LocaleKeys.firstscreen_kullaniciuyari.tr());
                         }
                       },
-                      child: Text("GİRİŞ"),
+                      child: Text(LocaleKeys.firstscreen_giris.tr()),
                       size: GFSize.LARGE,
                       color: Colors.grey.shade900,
                     ),

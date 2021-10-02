@@ -1,6 +1,12 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class  LocaleKeys {
+  static const firstscreen_kullaniciadi = 'firstscreen.kullaniciadi';
+  static const firstscreen_giris = 'firstscreen.giris';
+  static const firstscreen_kullaniciuyari = 'firstscreen.kullaniciuyari';
+  static const firstscreen = 'firstscreen';
+  static const emptypage_noproject = 'emptypage.noproject';
+  static const emptypage = 'emptypage';
   static const drawer_turkce = 'drawer.turkce';
   static const drawer_almanca = 'drawer.almanca';
   static const drawer_ingilizce = 'drawer.ingilizce';
@@ -29,5 +35,7 @@ abstract class  LocaleKeys {
   static const gorevscren_saatsecilmedi = 'gorevscren.saatsecilmedi';
   static const gorevscren = 'gorevscren';
   static const gorevyok = 'gorevyok';
+  static const tamam = 'tamam';
+  static const hata = 'hata';
 
 }

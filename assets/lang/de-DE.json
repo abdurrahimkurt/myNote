@@ -1,34 +1,45 @@
 {
+    "firstscreen": {
+        "kullaniciadi": "Geben Sie Ihren Benutzernamen ein..",
+        "giris": "ANMELDUNG",
+        "kullaniciuyari": "Benutzername eingeben!!"
+    },
+    "emptypage": {
+        "noproject": "In diesem Abschnitt sind die Aufgaben aufgelistet, die Ihnen gehören, und Sie können neue Aufgaben erstellen, indem Sie auf die '+'-Schaltfläche rechts klicken."
+        
+    },
     "drawer": {
         "turkce": "Türkisch",
         "almanca": "Deutsch ",
         "ingilizce": "Englisch"
     },
     "bottommenu": {
-        "gorevlerim": "Görevlerim",
-        "gecmisgorevler": "Geçmiş Görevler"
+        "gorevlerim": "Aufgaben",
+        "gecmisgorevler": "Vergangene Missionen"
     },
     "tabbar": {
-        "bugun": "Bugün",
-        "haftalik": "Haftalık",
-        "aylik": "Aylık"
+        "bugun": "Heute",
+        "haftalik": "Wöchentlich",
+        "aylik": "Monatlich"
     },
-    "tamamlabuton": "Tamamla",
-    "gorevlerimscreen": "Tüm Görevler",
-    "gecmisscreen": "Geçmiş Görevler",
+    "tamamlabuton": "Vollständig",
+    "gorevlerimscreen": "Alle Missionen",
+    "gecmisscreen": "Vergangene Missionen",
     "gorevscren": {
-        "gorevekle": "Görev Ekle",
-        "gorevadigir": "Görev Adını Giriniz..",
-        "gorevadihata": "Görev Adını Giriniz. Görev Adı Boş Bırakılamaz!",
-        "gorevaciklamagir": "Görev Açıklamasını Giriniz..",
-        "gorevaciklamahata": "Görev Açıklamasını Giriniz. Görev Açıklaması Boş Bırakılamaz!",
-        "tarihsec": "Tarih Seç",
-        "gorevtarihhata": "Görev Tarihi Giriniz. Görev Tarihi Boş Bırakılamaz!",
-        "saatsec": "SaatSec",
-        "gorevsaathata": "Görev Saati Giriniz. Görev Saati Boş Bırakılamaz!",
-        "gorevolustur": "Görev Oluştur",
-        "tarihsecilmedi": "Tarih Seçilmedi",
-        "saatsecilmedi": "Saat Seçilmedi"
+        "gorevekle": "Aufgabe hinzufügen",
+        "gorevadigir": "Geben Sie den Jobnamen ein..",
+        "gorevadihata": "Geben Sie den Aufgabennamen ein. Aufgabenname darf nicht leer sein!",
+        "gorevaciklamagir": "Geben Sie die Stellenbeschreibung ein..",
+        "gorevaciklamahata": "Geben Sie die Stellenbeschreibung ein. Quest Description Darf nicht leer bleiben!",
+        "tarihsec": "Datum auswählen",
+        "gorevtarihhata": "Geben Sie das Missionsdatum ein. Das Aufgabendatum darf nicht leer sein!",
+        "saatsec": "Wählen Sie Zeit",
+        "gorevsaathata": "Geben Sie die Aufgabenzeit ein. Aufgabenzeit kann nicht leer sein!",
+        "gorevolustur": "Aufgabe erstellen",
+        "tarihsecilmedi": "Kein Datum ausgewählt",
+        "saatsecilmedi": "Keine Zeit ausgewählt"
     },
-    "gorevyok": "Bir görev eklemek için + tuşuna dokun"
+    "gorevyok": "Tippen Sie auf +, um eine Aufgabe hinzuzufügen",
+    "tamam":"OK",
+    "hata":"FEHLER"
 }
